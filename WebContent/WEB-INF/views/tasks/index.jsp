@@ -1,12 +1,20 @@
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    EntityManager em = DBUtil.createEntityManager();
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:import url="../layout/app.jsp">
+    <c:param name="content">
+        <h2>タスク一覧</h2>
+        <ul>
+            <c:forEach var="task" items="${tasks}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/show?id=${task.id}">
+                        <c:out value="${task.id}" />
+                    </a>
+                    ：<c:out value="${task.title}"></c:out> &gt; <c:out value="${task.content}" />
+                </li>
+            </c:forEach>
+        </ul>
 
-    List<Tasks> tasks = em.createNamedQuery("getAlltasks", Tasks.class).getResultList();
+        <p><a href="${pageContext.request.contextPath}/new">新規メッセージの投稿</a></p>
 
-    em.close();
-
-    request.setAttribute("tasks", tsaks);
-
-    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/index.jsp");
-    rd.forward(request, response);
-}
+    </c:param>
+</c:import>
